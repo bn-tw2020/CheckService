@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Bootstrap include -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+<body>
+
+<center>
+  <h2>Save Note</h2>
+  <form action="/user/saveNote" method="post">
+    Student Id: <input type="text" name="saveNote_id" placeholder="학생 번호를 입력하세요">
+    <br><br>
+    Class: <input type="text" name="saveNote_class" placeholder="과목명">
+    <br><br>
+    Note: <input type="text" name="note" placeholder="강의노트정리">
+    <br><br>
+    <input class="btn btn-primary" type="submit" value="Submit">
+  </form> 
+</center>
+</body>
+</html>
