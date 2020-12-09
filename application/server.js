@@ -7,6 +7,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 const { send } = require('./sdk');
+const { resolve } = require('path');
 const ccpPath = path.resolve(__dirname, '..', 'network' ,'connection.json');
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
 const ccp = JSON.parse(ccpJSON);
@@ -50,35 +51,39 @@ app.get('/queryUser', (req, res)=>{
 // 2. REST라우팅
 app.post('/user', async(req, res)=>{
     const {add_id, total_count} = req.body;
-    send(1,"addStudent", add_id, total_count);
+    let args=[add_id, total_count];
+    send(1,"addStudent", args,res);
 })
 app.post('/user/attend', async(req, res)=>{
     const {enter_id, enter_class} = req.body;
-    send(1,"attand", enter_id, enter_class);
+    let args=[enter_id, enter_class]
+    send(1,"attand", args ,res);
 })
 app.post('/user/sit', async(req, res)=>{
     const {sit_id, sit_class, sitNo} = req.body;
-    send(1,"sit", sit_id, sit_class, sitNo);
+    let args=[sit_id, sit_class, sitNo]
+    send(1,"sit", args,res);
 })
 app.post('/user/download', async(req, res)=>{
     const {download_id, download_class} = req.body;
-    send(1,"download_material", download_id, download_class);
+    send(1,"download_material", [download_id, download_class],res);
 })
 app.post('/user/queryAnswer', async(req, res)=>{
     const {queryAnswer_id, query_class, query, answer} = req.body;
-    send(1,"query_answer", queryAnswer_id, query_class, query, answer);
+    send(1,"query_answer", [queryAnswer_id, query_class, query, answer],res);
 })
 app.post('/user/saveNote', async(req, res)=>{
     const {saveNote_id,saveNote_class, note} = req.body;
-    send(1,"save_note", saveNote_id, saveNoe_class, note);
+    send(1,"save_note", [saveNote_id, saveNote_class, note],res);
 })
 app.post('/user/exit', async(req, res)=>{
     const {exit_id,exit_class} = req.body;
-    send(1,"exitr", exit_id, eixt_class);
+    send(1,"exit", [exit_id, exit_class],res);
 })
 app.get('/user', async(req, res)=>{
     const {query_id} = req.query;
-    send(0,"queryStudent", query_id);
+    let args=[query_id];
+    send(0,"queryStudent", args,res);
 })
 
 // 서버시작

@@ -1,22 +1,123 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- Bootstrap include -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-<body>
+<head>
+  <!-- Bootstrap include -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- fontawsome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/v4-shims.css">
 
-<center>
-  <h2>Save Note</h2>
-  <form action="/user/saveNote" method="post">
-    Student Id: <input type="text" name="saveNote_id" placeholder="학생 번호를 입력하세요">
-    <br><br>
-    Class: <input type="text" name="saveNote_class" placeholder="과목명">
-    <br><br>
-    Note: <input type="text" name="note" placeholder="강의노트정리">
-    <br><br>
-    <input class="btn btn-primary" type="submit" value="Submit">
-  </form> 
-</center>
+  <!-- jquery 버전 유의 -->
+  <!-- slim/jquery, 3.1.0 윗 버전에서 ajax가 작동하지 않는 오류 확인 -->
+  <!-- Bootstrap의 CDN을 copy&paste 하되 Line 8의 버전만 3.1.0으로 수정하세요 -->
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+
+</head>
+
+<body>
+  <div class="container">
+      <i class="fas fa-fish" style="font-size: 150px;color:gainsboro"></i>
+      <h1> Check Service <br>프로토타입 </h1>
+      <hr>
+      <!-- 유저조회 -->
+      <div class="row justify-content-md-center">
+          <div class="col-lg">
+              <div id="find-alert"></div>
+              <h3>강의 노트 작성합니다.</h3>
+              <input type="text" id="saveNote_id" name="saveNote_id"" placeholder="유저 ID을 입력하세요"> <br>
+              <input type="text" id="saveNote_class" name="saveNote_class" placeholder="수업 강의명을 입력하세요"> <br>
+              <input type="textarea" id="note" name="note" placeholder="노트정리하세요"> <br>
+              <button class="btn btn-warning" id="saveNote-btn">등록하기</button>
+
+              <!-- 테이블 안에 row를 하나씩 붙이는 곳 -->
+              <div id="result"></div>
+          </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+          <div class="col-lg">
+              <button class="btn btn-warning" id="return-btn"><a href="/">돌아가기</a></button>
+          </div>
+      </div>
+  </div>
 </body>
-</html>
+
+<script>    
+  $("#saveNote-btn").click(()=>{
+      const value1 = $("#saveNote_id").val();
+      const value2 = $("#saveNote_class").val();
+      const value3 = $("#note").val();
+      const url = "/user/saveNote"
+      $.post(url, {saveNote_id: value1, saveNote_class: value2, note:value3}, (data,status)=>{
+          // 조회했을 때 값이 null이 아니면 (일치하는 값이 존재한다면)
+          console.log("add:"+status);
+
+          
+
+          if(status == "success"){
+              if($('#success3').length > 0){
+                  $('#find-alert').empty();
+              }
+              $('#find-alert').fadeIn(2000);
+              $('#find-alert').append("<div id='success3' class='alert alert-success'>등록에 성공했습니다!</div>");
+ 
+
+              // stringify는 json객체를 string으로, parse는 string을 json체로 변환 시켜줌
+
+              // const test = JSON.stringify(data)
+              // const parsedData = JSON.parse(test)
+              // $('#result').empty();
+              // $('#result').append("<p>" +test + "</p>")
+
+          }     
+
+          else{
+              if($('#success3').length > 0){
+                  $('#find-alert').empty();
+              }
+              $('#find-alert').fadeIn(2000);
+              $('#find-alert').append("<div id='success3' class='alert alert-warning'>조회를 실패했습니다!</div>");
+          }   
+      })
+  })
+
+</script>
+
+ 
+
+<!-- styling -->
+
+<style>
+
+  .container{
+      width: 100%;
+      height: 500px;
+      margin: 50px 50px;
+      padding: 20px 20px;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform:translateX(-50%);        
+  }
+
+ 
+
+  button{
+      margin: 20px 10px;
+  }
+
+ 
+
+  input{
+      width: 300px;
+      padding: 10px 8px;
+  }
+
+ 
+
+  .col-6{
+      padding: 20px 10px;
+  }
+
+</style>

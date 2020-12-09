@@ -1,11 +1,12 @@
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const fs = require('fs');
+const { resolve } = require('path');
 const path = require('path');
 const ccpPath = path.resolve(__dirname, '..', 'network' ,'connection.json');
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
 const ccp = JSON.parse(ccpJSON);
 
-async function send(type, func, args, res){ // type 1이면 invoke, type 0이면 query
+async function send(type, func, args,res){ // type 1이면 invoke, type 0이면 query
     try{
         const walletPath = path.join(process.cwd(),'wallet')
         const wallet = new FileSystemWallet(walletPath);
@@ -27,14 +28,14 @@ async function send(type, func, args, res){ // type 1이면 invoke, type 0이면
         if(type) {
             await contract.submitTransaction(func, ...args);
             console.log('Transaction has been submitted');
-            await gateway.disconnection();
+            await gateway.disconnect();
             res.status(200).send('success');
         } else {
-            const result = await contract.evaluateTransaction(func,...args);
+            const result = await contract.evaluateTransaction(func, ...args);
             console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-            res.status(200).send(result.toString());
-            // let obj = JSON.parse(result);
-            // res.status(200).json(obj);
+            // res.status(200).send(result.toString());
+            let obj = JSON.parse(result);
+            res.status(200).json(obj);
         }
     }catch(e){
         console.error(`Failed to submit transaction: ${e}`);

@@ -1,7 +1,7 @@
 {
-    "name": "teamate-basic",
+    "name": "bloc",
     "version": "1.0.0",
-    "description": "teamate-basic application implemented in JavaScript",
+    "description": "bloc application implemented in JavaScript",
     "engines": {
         "node": ">=8",
         "npm": ">=5"
